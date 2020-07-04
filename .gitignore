@@ -6,3 +6,6 @@
 /SunriseSunset/App_Data/Store.mdf
 /SunriseSunset/App_Data/Store_log.ldf
 /.vs/SunriseSunset/config/applicationhost.config
+/packages
+/SunriseSunset/bin
+/SunriseSunset/obj
