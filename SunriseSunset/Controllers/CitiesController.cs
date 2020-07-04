@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using SunriseSunset.Models;
 using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using SunriseSunset.Models;
 
 namespace SunriseSunset.Controllers
 {
@@ -21,20 +16,6 @@ namespace SunriseSunset.Controllers
             return View(await db.Cities.ToListAsync());
         }
 
-        // GET: Cities/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            City city = await db.Cities.FindAsync(id);
-            if (city == null)
-            {
-                return HttpNotFound();
-            }
-            return View(city);
-        }
 
         // GET: Cities/Create
         public ActionResult Create()
@@ -43,11 +24,9 @@ namespace SunriseSunset.Controllers
         }
 
         // POST: Cities/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Latitude,Longitude")] City city)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Key,Name,Latitude,Longitude")] City city)
         {
             if (ModelState.IsValid)
             {
@@ -75,11 +54,9 @@ namespace SunriseSunset.Controllers
         }
 
         // POST: Cities/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Latitude,Longitude")] City city)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Key,Name,Latitude,Longitude")] City city)
         {
             if (ModelState.IsValid)
             {
