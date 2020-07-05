@@ -1,7 +1,9 @@
-﻿using SunriseSunset.Models;
+﻿using System;
+using SunriseSunset.Models;
 using SunriseSunset.Network;
 using SunriseSunset.Repositories;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -12,6 +14,7 @@ namespace SunriseSunset.Controllers
         private readonly ICityRepository _cityRepository;
         private readonly ISunriseSunsetApi _sunriseSunsetApi;
 
+
         public HomeController(ICityRepository cityRepository, 
             ISunriseSunsetApi sunriseSunsetApi)
         {
@@ -19,18 +22,32 @@ namespace SunriseSunset.Controllers
             _sunriseSunsetApi = sunriseSunsetApi;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string city, int? selectionType)
         {
-            var cityList = await _cityRepository.ListAsync();
-            var citySunriseSunsetInfoMode = new List<CitySunriseSunsetInfoModel>();
+            var cityList = (await _cityRepository.ListAsync()).ToList();
 
-            foreach (var item in cityList)
+            var cityModels = string.IsNullOrEmpty(city) 
+                ? cityList
+                : cityList.Where(c => string.Equals(city, c.Key)).ToList();
+
+            var tasks = cityModels.Select(GetCitySunriseSunSetInfo);
+
+            var citySunriseSunsetInfoModel = await Task.WhenAll(tasks);
+
+            var operationTypes = 
+                from SelectionType d in Enum.GetValues(typeof(SelectionType))
+                select new { ID = (int)d, Name = d.ToString() };
+            
+
+            return View(new CitiesListViewModel
             {
-                citySunriseSunsetInfoMode.Add(await GetCitySunriseSunSetInfo(item));
-            }
+                Cities = citySunriseSunsetInfoModel,
+                CitySelectList = new SelectList(cityList, "Key", "Name"),
+                OperationTypes = new SelectList(operationTypes, "ID", "Name",string.Empty)
 
-            return View(citySunriseSunsetInfoMode);
+            });
         }
+
 
         private async Task<CitySunriseSunsetInfoModel> GetCitySunriseSunSetInfo(CityModel city)
         {
