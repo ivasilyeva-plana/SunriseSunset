@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="Init\NinjectRegistrations.cs" />
     <Compile Include="Models\CityModel.cs" />
+    <Compile Include="Models\CitySunriseSunsetInfoModel.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Init\DbInitializer.cs" />
     <Compile Include="Models\SunriseSunsetModel.cs" />
@@ -192,8 +193,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Cities\Create.cshtml" />
     <Content Include="Views\Cities\Delete.cshtml" />

@@ -16,10 +16,10 @@ namespace SunriseSunset.Models
     public class SunriseSunsetModel
     {
         [JsonProperty("sunrise")]
-        public string Sunrise { get; set; }
+        public DateTime Sunrise { get; set; }
 
         [JsonProperty("sunset")]
-        public string Sunset { get; set; }
+        public DateTime Sunset { get; set; }
     }
 
     public class ApiRequestError

@@ -4,6 +4,7 @@ using SunriseSunset.Models;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SunriseSunset.Network
 {
@@ -27,7 +28,12 @@ namespace SunriseSunset.Network
             request.AddParameter("lng", longitude);
 
             var restResponse = await ExecuteRequestAsync(request);
-            var sunriseSunsetResponse = DeserializeResponse<SunriseSunsetApiResponseModel>(restResponse);
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                DateFormatString = "h:mm:ss tt"
+            };
+            var sunriseSunsetResponse = DeserializeResponse<SunriseSunsetApiResponseModel>(restResponse, jsonSettings);
 
             return sunriseSunsetResponse.SunriseSunset;
         }
@@ -50,9 +56,9 @@ namespace SunriseSunset.Network
             return restResponse;
         }
 
-        private T DeserializeResponse<T>(IRestResponse response) where T : ApiRequestError
+        private T DeserializeResponse<T>(IRestResponse response, JsonSerializerSettings settings) where T : ApiRequestError
         {
-            var result = response.Content.To<T>();
+            var result = response.Content.To<T>(settings);
             if (result.Status != "OK")
             {
                 throw new ApplicationException($"Request error status {result.Status}");
