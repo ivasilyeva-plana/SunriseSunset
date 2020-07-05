@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 
-namespace SunriseSunset.Models
+namespace SunriseSunset.Entities
 {
     public class Context : DbContext
     {

@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
+using SunriseSunset.Entities;
 
-namespace SunriseSunset.Models
+namespace SunriseSunset.Init
 {
     public class DbInitializer : DropCreateDatabaseAlways<Context>
     {
