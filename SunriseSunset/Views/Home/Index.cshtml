@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SunriseSunset.Models.CitySunriseSunsetInfoModel>
+﻿@model SunriseSunset.Models.CitiesListViewModel
 @{
     ViewBag.Title = "Sunrise Sunset";
 }
@@ -11,22 +11,36 @@
     <title>Index</title>
 </head>
 <body>
+<form method="get">
+    <div class="form-inline">
+        <div class="form-group">
+            <label class="control-label">City: </label>
+            @Html.DropDownList("City", Model.CitySelectList as SelectList, string.Empty,
+                htmlAttributes: new { @class = "form-control" })
 
+            <label class="control-label">Sunrise or Sunset: </label>
+            @Html.DropDownList("SunriseSunset", Model.OperationTypes as SelectList, string.Empty,
+                htmlAttributes: new { @class = "form-control" })
+
+            <input type="submit" value="Фильтр" class="btn btn-default" />
+        </div>
+    </div>
+</form>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CityName)
+            City
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Sunrise)
+            Sunrise
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Sunset)
+            Sunset
         </th>
         
     </tr>
     
-    @foreach (var item in Model) {
+    @foreach (var item in Model.Cities) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CityName)

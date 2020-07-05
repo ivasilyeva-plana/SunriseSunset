@@ -149,10 +149,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Init\NinjectRegistrations.cs" />
+    <Compile Include="Models\CitiesListViewModel.cs" />
     <Compile Include="Models\CityModel.cs" />
     <Compile Include="Models\CitySunriseSunsetInfoModel.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Init\DbInitializer.cs" />
+    <Compile Include="Models\OperationTypes.cs" />
     <Compile Include="Models\SunriseSunsetModel.cs" />
     <Compile Include="Network\ISunriseSunsetApi.cs" />
     <Compile Include="Network\SunriseSunsetApi.cs" />
