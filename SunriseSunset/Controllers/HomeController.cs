@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using SunriseSunset.Models;
+﻿using SunriseSunset.Models;
 using SunriseSunset.Network;
 using SunriseSunset.Repositories;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace SunriseSunset.Controllers
 {
@@ -29,18 +26,22 @@ namespace SunriseSunset.Controllers
 
             foreach (var item in cityList)
             {
-                var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseSunsetMessage(item.Latitude, item.Longitude);
-                citySunriseSunsetInfoMode.Add(new CitySunriseSunsetInfoModel
-                {
-                    CityName = item.Name,
-                    Sunrise = sunriseSunsetData.Sunrise.ToLocalTime().ToString("h:mm:ss tt"),
-                    Sunset = sunriseSunsetData.Sunset.ToLocalTime().ToString("h:mm:ss tt")
-                });
+                citySunriseSunsetInfoMode.Add(await GetCitySunriseSunSetInfo(item));
             }
 
             return View(citySunriseSunsetInfoMode);
         }
 
+        private async Task<CitySunriseSunsetInfoModel> GetCitySunriseSunSetInfo(CityModel city)
+        {
+            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseSunsetMessage(city.Latitude, city.Longitude);
+            return new CitySunriseSunsetInfoModel
+            {
+                CityName = city.Name,
+                Sunrise = sunriseSunsetData.Sunrise.ToLocalTime().ToString("h:mm:ss tt"),
+                Sunset = sunriseSunsetData.Sunset.ToLocalTime().ToString("h:mm:ss tt")
+            };
+        }
 
     }
 }
