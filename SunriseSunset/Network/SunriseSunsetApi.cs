@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using RestSharp;
+using SunriseSunset.Extensions;
+using SunriseSunset.Models;
+using System;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
-using RestSharp;
 
 namespace SunriseSunset.Network
 {
-    public class SunriseSunsetApi
+    public class SunriseSunsetApi : ISunriseSunsetApi
     {
         private readonly string _url;
 
@@ -20,15 +19,17 @@ namespace SunriseSunset.Network
             _url = url;
         }
 
-        public async Task GetSunriseSunsetMessage(double latitude, double longitude)
+        public async Task<SunriseSunsetModel> GetSunriseSunsetMessage(double latitude, double longitude)
         {
             var request = new RestRequest(Method.GET);
 
-            request.AddParameter("uuid", latitude);
-            request.AddParameter("token", longitude);
+            request.AddParameter("lat", latitude);
+            request.AddParameter("lng", longitude);
 
             var restResponse = await ExecuteRequestAsync(request);
+            var sunriseSunsetResponse = DeserializeResponse<SunriseSunsetApiResponseModel>(restResponse);
 
+            return sunriseSunsetResponse.SunriseSunset;
         }
 
 
@@ -49,6 +50,15 @@ namespace SunriseSunset.Network
             return restResponse;
         }
 
+        private T DeserializeResponse<T>(IRestResponse response) where T : ApiRequestError
+        {
+            var result = response.Content.To<T>();
+            if (result.Status != "OK")
+            {
+                throw new ApplicationException($"Request error status {result.Status}");
+            }
+            return result;
+        }
 
     }
 }

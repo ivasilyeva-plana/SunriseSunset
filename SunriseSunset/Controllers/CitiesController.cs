@@ -8,7 +8,7 @@ namespace SunriseSunset.Controllers
 {
     public class CitiesController : Controller
     {
-        private readonly ICityRepository _cityRepository; 
+        private readonly ICityRepository _cityRepository;
 
         public CitiesController(ICityRepository cityRepository) => _cityRepository = cityRepository;
         
