@@ -1,6 +1,4 @@
-﻿using Ninject;
-using Ninject.Web.Mvc;
-using SunriseSunset.Init;
+﻿using SunriseSunset.Models;
 using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
@@ -19,10 +17,6 @@ namespace SunriseSunset
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            var registrations = new NinjectRegistrations();
-            var kernel = new StandardKernel(registrations);
-            DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }
 }

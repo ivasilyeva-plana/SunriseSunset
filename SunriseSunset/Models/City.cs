@@ -2,7 +2,7 @@
 
 namespace SunriseSunset.Models
 {
-    public class CityModel
+    public class City
     {
         public int Id { get; set; }
         [MaxLength(150)]
