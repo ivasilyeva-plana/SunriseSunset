@@ -1,5 +1,5 @@
 ﻿using SunriseSunset.Models;
-using System.Data.Entity;
+using SunriseSunset.Repositories;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -8,44 +8,36 @@ namespace SunriseSunset.Controllers
 {
     public class CitiesController : Controller
     {
-        private Context db = new Context();
+        private readonly ICityRepository _cityRepository; 
 
+        public CitiesController(ICityRepository cityRepository) => _cityRepository = cityRepository;
+        
         // GET: Cities
-        public async Task<ActionResult> Index()
-        {
-            return View(await db.Cities.ToListAsync());
-        }
-
-
+        public async Task<ActionResult> Index() => View(await _cityRepository.ListAsync());
+        
         // GET: Cities/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        public ActionResult Create() => View();
+        
 
         // POST: Cities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Key,Name,Latitude,Longitude")] City city)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Key,Name,Latitude,Longitude")] CityModel city)
         {
-            if (ModelState.IsValid)
-            {
-                db.Cities.Add(city);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+            if (!ModelState.IsValid) return View(city);
+            await _cityRepository.CreateAsync(city);
+            return RedirectToAction("Index");
 
-            return View(city);
         }
 
         // GET: Cities/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = await db.Cities.FindAsync(id);
+            var city = await _cityRepository.GetAsync(id.Value);
             if (city == null)
             {
                 return HttpNotFound();
@@ -56,25 +48,21 @@ namespace SunriseSunset.Controllers
         // POST: Cities/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Key,Name,Latitude,Longitude")] City city)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Key,Name,Latitude,Longitude")] CityModel city)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(city).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(city);
+            if (!ModelState.IsValid) return View(city);
+            await _cityRepository.EditAsync(city);
+            return RedirectToAction("Index");
         }
 
         // GET: Cities/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = await db.Cities.FindAsync(id);
+            var city = await _cityRepository.GetAsync(id.Value);
             if (city == null)
             {
                 return HttpNotFound();
@@ -87,19 +75,9 @@ namespace SunriseSunset.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            City city = await db.Cities.FindAsync(id);
-            db.Cities.Remove(city);
-            await db.SaveChangesAsync();
+            await _cityRepository.DeleteAsync(id);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }
