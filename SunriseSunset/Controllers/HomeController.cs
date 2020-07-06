@@ -43,7 +43,8 @@ namespace SunriseSunset.Controllers
             {
                 Cities = citySunriseSunsetInfoModel,
                 CitySelectList = new SelectList(cityList, "Key", "Name"),
-                OperationTypes = new SelectList(operationTypes, "ID", "Name",string.Empty)
+                SelectionColumn = new SelectList(operationTypes, "ID", "Name"),
+                SelectionColumnValue = selectionType
 
             });
         }

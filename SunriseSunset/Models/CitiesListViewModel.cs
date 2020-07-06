@@ -7,6 +7,7 @@ namespace SunriseSunset.Models
     {
         public ICollection<CitySunriseSunsetInfoModel> Cities { get; set; }
         public SelectList CitySelectList { get; set; }
-        public SelectList OperationTypes { get; set; }
+        public SelectList SelectionColumn { get; set; }
+        public int? SelectionColumnValue { get; set; }
     }
 }

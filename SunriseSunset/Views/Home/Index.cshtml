@@ -15,11 +15,11 @@
     <div class="form-inline">
         <div class="form-group">
             <label class="control-label">City: </label>
-            @Html.DropDownList("City", Model.CitySelectList as SelectList, string.Empty,
+            @Html.DropDownList("City", Model.CitySelectList, string.Empty,
                 htmlAttributes: new { @class = "form-control" })
 
             <label class="control-label">Sunrise or Sunset: </label>
-            @Html.DropDownList("SunriseSunset", Model.OperationTypes as SelectList, string.Empty,
+            @Html.DropDownList("SelectionType", Model.SelectionColumn, string.Empty,
                 htmlAttributes: new { @class = "form-control" })
 
             <input type="submit" value="Фильтр" class="btn btn-default" />
@@ -31,13 +31,36 @@
         <th>
             City
         </th>
-        <th>
-            Sunrise
-        </th>
-        <th>
-            Sunset
-        </th>
-        
+
+        @if (Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 1)
+        {
+            <th style="display:none;">
+                Sunrise
+            </th>
+        }
+        else
+        {
+            <th>
+                Sunrise
+            </th>
+        }
+
+
+
+        @if (Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 0)
+        {
+            <th style="display:none;">
+                Sunset
+            </th>
+        }
+        else
+        {
+            <th>
+                Sunset
+            </th>
+        }
+
+
     </tr>
     
     @foreach (var item in Model.Cities) {
@@ -45,13 +68,33 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CityName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sunrise)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sunset)
-            </td>
-            
+
+            @if (Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 1)
+            {
+                <td style="display:none;">
+                    @Html.DisplayFor(modelItem => item.Sunrise)
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sunrise)
+                </td>
+            }
+
+            @if (Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 0)
+            {
+                <td style="display:none;">
+                    @Html.DisplayFor(modelItem => item.Sunset)
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sunset)
+                </td>
+            }
+
         </tr>
     }
     
