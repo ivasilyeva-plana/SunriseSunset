@@ -1,6 +1,7 @@
 ﻿using Ninject.Modules;
 using SunriseSunset.Models;
 using SunriseSunset.Network;
+using SunriseSunset.Properties;
 using SunriseSunset.Repositories;
 
 namespace SunriseSunset.Init
@@ -12,7 +13,7 @@ namespace SunriseSunset.Init
             Bind<Context>().ToSelf();
             Bind<ICityRepository>().To<CityRepository>();
             Bind<ISunriseSunsetApi>().To<SunriseSunsetApi>()
-                .WithConstructorArgument("url", "https://api.sunrise-sunset.org/json");
+                .WithConstructorArgument("url", Settings.Default.ApiUrl);
         }
     }
 }

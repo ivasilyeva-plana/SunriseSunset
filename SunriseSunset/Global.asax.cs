@@ -11,23 +11,7 @@ using Ninject.Web.Mvc;
 namespace SunriseSunset
 {
     public class MvcApplication : NinjectHttpApplication
-    {/*
-        protected void Application_Start()
-        {
-            Database.SetInitializer(new DbInitializer());
-
-            AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            var registrations = new NinjectRegistrations();
-            var kernel = new StandardKernel(registrations);
-            DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
-        }*/
-
-       
-
+    {
         protected override IKernel CreateKernel()
         {
 
@@ -57,6 +41,7 @@ namespace SunriseSunset
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            log4net.Config.XmlConfigurator.Configure();
 
         }
     }

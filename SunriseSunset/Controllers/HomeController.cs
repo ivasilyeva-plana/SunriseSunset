@@ -31,11 +31,11 @@ namespace SunriseSunset.Controllers
             var cityModels = string.IsNullOrEmpty(city) 
                 ? cityList
                 : cityList.Where(c => string.Equals(city, c.Key)).ToList();
+            
+           var tasks = cityModels.Select(GetCitySunriseSunSetInfo);
 
-            var tasks = cityModels.Select(GetCitySunriseSunSetInfo);
-
-            var citySunriseSunsetInfoModel = await Task.WhenAll(tasks);
-
+           var citySunriseSunsetInfoModel = await Task.WhenAll(tasks);
+           
             var operationTypes = 
                 from SelectionType d in Enum.GetValues(typeof(SelectionType))
                 select new { ID = (int)d, Name = d.ToString() };

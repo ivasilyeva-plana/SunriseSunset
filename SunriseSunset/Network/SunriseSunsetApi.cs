@@ -15,11 +15,8 @@ namespace SunriseSunset.Network
         private IRestClient _restClient;
         private IRestClient RestClient => _restClient = _restClient ?? new RestClient(_url) { Timeout = 5000 };
 
-        public SunriseSunsetApi(string url)
-        {
-            _url = url;
-        }
-
+        public SunriseSunsetApi(string url) => _url = url;
+        
         public async Task<SunriseSunsetModel> GetSunriseSunsetMessage(double latitude, double longitude)
         {
             var request = new RestRequest(Method.GET);
@@ -48,11 +45,6 @@ namespace SunriseSunset.Network
                 throw new ApplicationException("Network transport error (no internet connection, failed DNS lookup, etc).");
             }
 
-            if (restResponse.StatusCode != HttpStatusCode.OK)
-            {
-                throw new ApplicationException(restResponse.ErrorMessage);
-            }
-
             return restResponse;
         }
 
@@ -61,7 +53,7 @@ namespace SunriseSunset.Network
             var result = response.Content.To<T>(settings);
             if (result.Status != "OK")
             {
-                throw new ApplicationException($"Request error status {result.Status}");
+                throw new Exception($"Request error status {result.Status}");
             }
             return result;
         }
