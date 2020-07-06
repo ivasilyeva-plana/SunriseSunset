@@ -32,34 +32,13 @@
             City
         </th>
 
-        @if (Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 1)
-        {
-            <th style="display:none;">
-                Sunrise
-            </th>
-        }
-        else
-        {
-            <th>
-                Sunrise
-            </th>
-        }
+        <th style="@(Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 1 ? "display:none;" : string.Empty)">
+            Sunrise
+        </th>
 
-
-
-        @if (Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 0)
-        {
-            <th style="display:none;">
-                Sunset
-            </th>
-        }
-        else
-        {
-            <th>
-                Sunset
-            </th>
-        }
-
+        <th style="@(Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 0 ? "display:none;" : string.Empty)">
+            Sunset
+        </th>
 
     </tr>
     
@@ -69,32 +48,13 @@
                 @Html.DisplayFor(modelItem => item.CityName)
             </td>
 
-            @if (Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 1)
-            {
-                <td style="display:none;">
-                    @Html.DisplayFor(modelItem => item.Sunrise)
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sunrise)
-                </td>
-            }
+            <td style="@(Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 1 ? "display:none;" : string.Empty)">
+                <script>document.write(new Date('@item.Sunrise').toLocaleTimeString())</script>
+            </td>
 
-            @if (Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 0)
-            {
-                <td style="display:none;">
-                    @Html.DisplayFor(modelItem => item.Sunset)
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sunset)
-                </td>
-            }
-
+            <td style="@(Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 0 ? "display:none;" : string.Empty)">
+                <script>document.write(new Date('@item.Sunset').toLocaleTimeString())</script>
+            </td>
         </tr>
     }
     

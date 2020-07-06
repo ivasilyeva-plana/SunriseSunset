@@ -44,7 +44,5 @@ namespace SunriseSunset.Repositories
         {
             await _db.SaveChangesAsync();
         }
-
-
     }
 }

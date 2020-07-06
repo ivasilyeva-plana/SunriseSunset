@@ -17,7 +17,7 @@ namespace SunriseSunset.Network
 
         public SunriseSunsetApi(string url) => _url = url;
         
-        public async Task<SunriseSunsetModel> GetSunriseSunsetMessage(double latitude, double longitude)
+        public async Task<SunriseSunsetModel> GetSunriseSunsetMessageAsync(double latitude, double longitude)
         {
             var request = new RestRequest(Method.GET);
 
@@ -28,7 +28,7 @@ namespace SunriseSunset.Network
 
             var jsonSettings = new JsonSerializerSettings
             {
-                DateFormatString = "h:mm:ss tt"
+                DateFormatString = "h:mm:ss tt", DateTimeZoneHandling = DateTimeZoneHandling.Utc
             };
             var sunriseSunsetResponse = DeserializeResponse<SunriseSunsetApiResponseModel>(restResponse, jsonSettings);
 

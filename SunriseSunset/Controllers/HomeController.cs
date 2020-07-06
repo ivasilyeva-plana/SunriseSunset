@@ -1,12 +1,11 @@
-﻿using System;
+﻿using SunriseSunset.HandleError;
 using SunriseSunset.Models;
 using SunriseSunset.Network;
 using SunriseSunset.Repositories;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using SunriseSunset.HandleError;
 
 namespace SunriseSunset.Controllers
 {
@@ -47,19 +46,18 @@ namespace SunriseSunset.Controllers
                 CitySelectList = new SelectList(cityList, "Key", "Name"),
                 SelectionColumn = new SelectList(operationTypes, "ID", "Name"),
                 SelectionColumnValue = selectionType
-
             });
         }
 
 
         private async Task<CitySunriseSunsetInfoModel> GetCitySunriseSunSetInfo(CityModel city)
         {
-            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseSunsetMessage(city.Latitude, city.Longitude);
+            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseSunsetMessageAsync(city.Latitude, city.Longitude);
             return new CitySunriseSunsetInfoModel
             {
                 CityName = city.Name,
-                Sunrise = sunriseSunsetData.Sunrise.ToLocalTime().ToString("h:mm:ss tt"),
-                Sunset = sunriseSunsetData.Sunset.ToLocalTime().ToString("h:mm:ss tt")
+                Sunrise = sunriseSunsetData.Sunrise.ToLocalTime(),
+                Sunset = sunriseSunsetData.Sunset.ToLocalTime()
             };
         }
 

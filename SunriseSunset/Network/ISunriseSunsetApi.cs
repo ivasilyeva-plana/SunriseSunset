@@ -5,6 +5,6 @@ namespace SunriseSunset.Network
 {
     public interface ISunriseSunsetApi
     {
-        Task<SunriseSunsetModel> GetSunriseSunsetMessage(double latitude, double longitude);
+        Task<SunriseSunsetModel> GetSunriseSunsetMessageAsync(double latitude, double longitude);
     }
 }
