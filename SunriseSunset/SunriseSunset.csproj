@@ -148,6 +148,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HandleError\CustomHandleError.cs" />
     <Compile Include="Init\NinjectRegistrations.cs" />
     <Compile Include="Models\CitiesListViewModel.cs" />
     <Compile Include="Models\CityModel.cs" />

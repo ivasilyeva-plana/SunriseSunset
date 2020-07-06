@@ -1,5 +1,5 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using SunriseSunset.HandleError;
 
 namespace SunriseSunset
 {
@@ -7,6 +7,7 @@ namespace SunriseSunset
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            filters.Add(new CustomHandleErrorAttribute());
             filters.Add(new HandleErrorAttribute());
         }
     }

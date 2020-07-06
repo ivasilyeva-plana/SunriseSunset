@@ -3,9 +3,11 @@ using SunriseSunset.Repositories;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using SunriseSunset.HandleError;
 
 namespace SunriseSunset.Controllers
 {
+    [CustomHandleError]
     public class CitiesController : Controller
     {
         private readonly ICityRepository _cityRepository;

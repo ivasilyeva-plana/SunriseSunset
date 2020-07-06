@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using SunriseSunset.HandleError;
 
 namespace SunriseSunset.Controllers
 {
+    [CustomHandleError]
     public class HomeController : Controller
     {
         private readonly ICityRepository _cityRepository;

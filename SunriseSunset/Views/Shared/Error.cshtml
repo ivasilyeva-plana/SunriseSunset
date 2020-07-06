@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model System.Web.Mvc.HandleErrorInfo
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -8,6 +9,19 @@
     <hgroup>
         <h1>Error.</h1>
         <h2>An error occurred while processing your request.</h2>
+        @if (Model != null)
+        {
+    <div>
+        @Model.Exception.Message
+        <br />
+        @if (Model.Exception.InnerException != null)
+        {
+            @Model.Exception.InnerException.Message
+            <br />
+        }
+        @Model.ControllerName
+    </div>
+        }
     </hgroup>
 </body>
 </html>
