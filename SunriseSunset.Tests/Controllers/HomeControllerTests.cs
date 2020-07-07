@@ -16,7 +16,7 @@ namespace SunriseSunset.Tests.Controllers
 
     public class HomeControllerTest
     {
-        private static readonly IReadOnlyList<CityModel> _cities = new List<CityModel>
+        private static readonly IReadOnlyList<CityModel> Cities = new List<CityModel>
             {
                 new CityModel
                 {
@@ -53,7 +53,7 @@ namespace SunriseSunset.Tests.Controllers
         }
 
         [Test]
-        [TestCaseSource(nameof(_cities))]
+        [TestCaseSource(nameof(Cities))]
         public async Task IndexReturnsExactCityInfoTest(CityModel city)
         {
             var controller = new HomeController(_cityRepository.Object, _sunriseSunsetApi.Object);
@@ -73,7 +73,7 @@ namespace SunriseSunset.Tests.Controllers
             model.Cities.First().Sunset.Should().Be(_sunriseSunsetModels[city.Id].Sunset);
 
             model.CitySelectList.Select(x => x.Value).Should()
-                .BeEquivalentTo(_cities.Select(x => x.Key));
+                .BeEquivalentTo(Cities.Select(x => x.Key));
 
             model.SelectionColumn.Select(x => x.Value).Should()
                 .BeEquivalentTo("0", "1");
@@ -97,11 +97,11 @@ namespace SunriseSunset.Tests.Controllers
             viewResult.Model.Should().BeOfType<CitiesListViewModel>();
 
             var model = viewResult.Model as CitiesListViewModel;
-            model.Cities.Should().HaveCount(_cities.Count);
+            model.Cities.Should().HaveCount(Cities.Count);
 
             foreach (var cityInfo in model.Cities)
             {
-                var entity = _cities.First(x => x.Name == cityInfo.CityName);
+                var entity = Cities.First(x => x.Name == cityInfo.CityName);
 
                 cityInfo.CityName.Should().Be(entity.Name);
                 cityInfo.Sunrise.Should().Be(_sunriseSunsetModels[entity.Id].Sunrise);
@@ -109,7 +109,7 @@ namespace SunriseSunset.Tests.Controllers
             }
 
             model.CitySelectList.Select(x => x.Value).Should()
-                .BeEquivalentTo(_cities.Select(x => x.Key));
+                .BeEquivalentTo(Cities.Select(x => x.Key));
 
             model.SelectionColumn.Select(x => x.Value).Should()
                 .BeEquivalentTo("0", "1");
@@ -146,11 +146,11 @@ namespace SunriseSunset.Tests.Controllers
                     api.GetSunriseSunsetMessageAsync(It.IsAny<double>(), It.IsAny<double>()))
                 .Returns<double, double>((x, y) =>
                 {
-                    var city = _cities.FirstOrDefault(c => c.Latitude == x && c.Longitude == y);
+                    var city = Cities.FirstOrDefault(c => c.Latitude == x && c.Longitude == y);
                     return Task.FromResult(_sunriseSunsetModels[city.Id]);
                 });
 
-            _cityRepository.Setup(repository => repository.ListAsync()).ReturnsAsync(_cities);
+            _cityRepository.Setup(repository => repository.ListAsync()).ReturnsAsync(Cities);
         }
     }
 }
