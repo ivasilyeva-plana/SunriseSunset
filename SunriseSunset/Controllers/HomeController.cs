@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Ninject.Extensions.Logging;
 
 namespace SunriseSunset.Controllers
 {
@@ -14,13 +15,14 @@ namespace SunriseSunset.Controllers
     {
         private readonly ICityRepository _cityRepository;
         private readonly ISunriseSunsetApi _sunriseSunsetApi;
-
+        private readonly ILogger _logger;
 
         public HomeController(ICityRepository cityRepository, 
-            ISunriseSunsetApi sunriseSunsetApi)
+            ISunriseSunsetApi sunriseSunsetApi, ILogger logger)
         {
             _cityRepository = cityRepository;
             _sunriseSunsetApi = sunriseSunsetApi;
+            _logger = logger;
         }
 
         public async Task<ActionResult> Index(string city, int? selectionType)
@@ -52,12 +54,20 @@ namespace SunriseSunset.Controllers
 
         private async Task<CitySunriseSunsetInfoModel> GetCitySunriseSunSetInfo(CityModel city)
         {
-            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseSunsetMessageAsync(city.Latitude, city.Longitude);
+            SunriseSunsetModel sunriseSunsetData = null;
+            try
+            {
+                sunriseSunsetData = await _sunriseSunsetApi.GetSunriseSunsetMessageAsync(city.Latitude, city.Longitude);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, $"Cannot get sunrise/sunset time for the {city.Key}");
+            }
             return new CitySunriseSunsetInfoModel
             {
                 CityName = city.Name,
-                Sunrise = sunriseSunsetData.Sunrise.ToLocalTime(),
-                Sunset = sunriseSunsetData.Sunset.ToLocalTime()
+                Sunrise = sunriseSunsetData?.Sunrise.ToLocalTime(),
+                Sunset = sunriseSunsetData?.Sunset.ToLocalTime()
             };
         }
 

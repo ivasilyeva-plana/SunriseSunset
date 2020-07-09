@@ -1,7 +1,5 @@
-﻿using System;
-using System.Web;
+﻿using log4net;
 using System.Web.Mvc;
-using log4net;
 
 namespace SunriseSunset.HandleError
 {

@@ -49,11 +49,25 @@
             </td>
 
             <td style="@(Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 1 ? "display:none;" : string.Empty)">
-                <script>document.write(new Date('@item.Sunrise').toLocaleTimeString())</script>
+                @if (item.Sunrise.HasValue)
+                {
+                    <script>document.write(new Date('@item.Sunrise').toLocaleTimeString())</script>
+                }
+                else
+                {
+                    <span>---</span>
+                }
             </td>
 
             <td style="@(Model.SelectionColumnValue.HasValue && Model.SelectionColumnValue == 0 ? "display:none;" : string.Empty)">
-                <script>document.write(new Date('@item.Sunset').toLocaleTimeString())</script>
+                @if (item.Sunset.HasValue)
+                {
+                    <script>document.write(new Date('@item.Sunset').toLocaleTimeString())</script>
+                }
+                else
+                {
+                    <span>---</span>
+                }
             </td>
         </tr>
     }

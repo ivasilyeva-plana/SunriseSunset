@@ -19,7 +19,11 @@
             @Model.Exception.InnerException.Message
             <br />
         }
-        @Model.ControllerName
+        <p>
+            Go to the
+            @Html.ActionLink("Home", "Index", "Home")
+            page
+        </p>
     </div>
         }
     </hgroup>

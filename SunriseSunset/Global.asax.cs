@@ -1,12 +1,11 @@
-﻿using SunriseSunset.Init;
+﻿using Ninject;
+using Ninject.Web.Common.WebHost;
+using SunriseSunset.Init;
 using System.Data.Entity;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Ninject;
-using Ninject.Web.Common.WebHost;
-using Ninject.Web.Mvc;
+using Ninject.Extensions.Logging.Log4net;
 
 namespace SunriseSunset
 {
@@ -42,7 +41,6 @@ namespace SunriseSunset
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             log4net.Config.XmlConfigurator.Configure();
-
         }
     }
 }

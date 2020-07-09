@@ -1,9 +1,9 @@
-﻿using SunriseSunset.Models;
+﻿using Ninject.Extensions.Logging;
+using SunriseSunset.HandleError;
+using SunriseSunset.Models;
 using SunriseSunset.Repositories;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using SunriseSunset.HandleError;
 
 namespace SunriseSunset.Controllers
 {
@@ -11,9 +11,14 @@ namespace SunriseSunset.Controllers
     public class CitiesController : Controller
     {
         private readonly ICityRepository _cityRepository;
+        private readonly ILogger _logger;
 
-        public CitiesController(ICityRepository cityRepository) => _cityRepository = cityRepository;
-        
+        public CitiesController(ICityRepository cityRepository, ILogger logger)
+        {
+            _cityRepository = cityRepository;
+            _logger = logger;
+        }
+
         // GET: Cities
         public async Task<ActionResult> Index() => View(await _cityRepository.ListAsync());
         
@@ -29,7 +34,6 @@ namespace SunriseSunset.Controllers
             if (!ModelState.IsValid) return View(city);
             await _cityRepository.CreateAsync(city);
             return RedirectToAction("Index");
-
         }
 
         // GET: Cities/Edit/5
@@ -37,12 +41,14 @@ namespace SunriseSunset.Controllers
         {
             if (!id.HasValue)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                _logger.Debug("Id is not specified for the edit city method.");
+                return RedirectToAction("Index");
             }
             var city = await _cityRepository.GetAsync(id.Value);
             if (city == null)
             {
-                return HttpNotFound();
+                _logger.Debug($"City with the specified id - {id} wasn't found.");
+                return RedirectToAction("Index");
             }
             return View(city);
         }
@@ -62,13 +68,16 @@ namespace SunriseSunset.Controllers
         {
             if (!id.HasValue)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                _logger.Debug("Id is not specified for the delete city method.");
+                return RedirectToAction("Index");
             }
             var city = await _cityRepository.GetAsync(id.Value);
             if (city == null)
             {
-                return HttpNotFound();
+                _logger.Debug($"City with the specified id - {id} wasn't found.");
+                return RedirectToAction("Index");
             }
+
             return View(city);
         }
 
@@ -77,6 +86,13 @@ namespace SunriseSunset.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
+            var city = await _cityRepository.GetAsync(id);
+            if (city == null)
+            {
+                _logger.Debug($"City with the specified id - {id} wasn't found.");
+                return RedirectToAction("Index");
+            }
+
             await _cityRepository.DeleteAsync(id);
             return RedirectToAction("Index");
         }
